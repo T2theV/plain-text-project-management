@@ -1,0 +1,51 @@
+@startgantt
+
+'Section to start listing tasks
+
+!$projason = %load_json(tasks.json)
+!$strvar = ""
+
+!foreach $ta in $projason.tasks
+    !if ($ta.id > 0)
+        ' !if %json_key_exists($ta, resources)
+        '     $strvar = ""
+        '     !foreach $re in $ta.resources
+        '         $strvar = strvar + $re.name:$re.percent%
+        '     !endfor
+        '     [$ta.description] on $strvar requires $ta.duration days
+        ' !else
+            [$ta.description] requires $ta.duration days
+        ' !endif
+    !endif
+!endfor
+
+'add starting constraint
+!foreach $ta in $projason.tasks
+    !if %json_key_exists($ta, starts)
+        [$ta.description] starts %string($ta.starts)
+    !endif
+!endfor
+
+'section to add in precedding tasks
+
+!foreach $ts in $projason.tasks
+    !if (%json_key_exists($ts, predecessors))
+        !if (%get_json_type($ts.predecessors) == "array")
+            !foreach $pr in $ts.predecessors
+                !foreach $tf in $projason.tasks
+                    !if ($pr == $tf.id)
+                        [$tf.description] -> [$ts.description]
+                    !endif
+                !endfor
+            !endfor
+        !else !if (%get_json_type($ts.predecessors) == "number")
+            !foreach $tf2 in $projason.tasks
+                !if ($ts.predecessors == $tf2.id)
+                    [$tf2.description] -> [$ts.description]
+                !endif
+            !endfor
+        !endif
+    !endif
+!endfor
+
+@endgantt
