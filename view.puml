@@ -3,7 +3,22 @@
 'Section to start listing tasks
 
 !$projason = %load_json(tasks.json)
-!$strvar = ""
+
+!if %json_key_exists($projason, startDate)
+    project starts $projason.startDate
+!endif
+
+!if %json_key_exists($projason, closedDays)
+    !foreach $day in $projason.closedDays
+        !if %json_key_exists($day, day)
+            $day.day are closed
+        !endif
+        !if %json_key_exists($day, date)
+            $day.date is closed
+        !endif
+    !endfor
+!endif
+
 
 !foreach $ta in $projason.tasks
     !if ($ta.id > 0)
@@ -49,5 +64,20 @@
         !endif
     !endif
 !endfor
+
+'task completeion listings
+!foreach $task in $projason.tasks
+    !if %json_key_exists($task, completed)
+        [$task.description] is $task.completed completed
+    !else
+        [$task.description] is 0 completed
+    !endif
+!endfor
+
+!if %json_key_exists($projason, projectName)
+title $projason.projectName
+!endif
+
+footer Made by PUML Strungs: Gantt
 
 @endgantt
