@@ -10,7 +10,9 @@
         ' !if %json_key_exists($ta, resources)
         '     $strvar = ""
         '     !foreach $re in $ta.resources
-        '         $strvar = strvar + $re.name:$re.percent%
+        '         $strvar = "{"
+        '    $strvar = %string($strvar + $re.name:$re.percent%
+        '.   $strvar = %string($strvar + "}")
         '     !endfor
         '     [$ta.description] on $strvar requires $ta.duration days
         ' !else
