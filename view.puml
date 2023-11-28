@@ -7,17 +7,17 @@
 
 !foreach $ta in $projason.tasks
     !if ($ta.id > 0)
-        ' !if %json_key_exists($ta, resources)
-        '     $strvar = ""
-        '     !foreach $re in $ta.resources
-        '         $strvar = "{"
-        '    $strvar = %string($strvar + $re.name:$re.percent%
-        '.   $strvar = %string($strvar + "}")
-        '     !endfor
-        '     [$ta.description] on $strvar requires $ta.duration days
-        ' !else
+        !if %json_key_exists($ta, resources)
+            !$strvar = ""
+            !foreach $re in $ta.resources
+                !$strvar = $strvar + "{"
+                !$strvar = $strvar + $re.name:$re.percent%
+                !$strvar = $strvar + "}"
+            !endfor
+            [$ta.description] on $strvar requires $ta.duration days
+        !else
             [$ta.description] requires $ta.duration days
-        ' !endif
+        !endif
     !endif
 !endfor
 
