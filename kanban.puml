@@ -1,0 +1,79 @@
+
+@startuml
+
+!$glob_sp = 0
+!$glob_boardnum = 0
+!$glob_tsknum = 0
+
+!$boardnames = {"name" : ["Back Log", "To Do", "In Progress", "Done", "Rejected" ]}
+
+!procedure $json_task2section($json_in, $sectionname = "Back Log")
+    
+    !$old = "start"
+    !$sp = 0
+    !foreach $tsk in $json_in.tasks
+    'render items in section
+        !if %json_key_exists($tsk, board)
+            !if $tsk.board == $sectionname
+                node $tsk.id [
+                    **$tsk.description**
+                    ====
+                    !$glob_sp = $glob_sp + 1
+                    %string($glob_sp)
+                ]
+
+                'render the postition below the last
+                !if $old != "start"
+                    $old -[hidden]- $tsk.id 
+                !endif 
+                !$old = $tsk.id
+            !endif
+        !endif
+    !endfor
+    !$labelname = "spremain" + $glob_boardnum 
+    !$labeltext = "SP Remaining: "
+    !$labeltext = $labeltext + $glob_sp
+    label $labelname as "$labeltext"
+    !$glob_boardnum = $glob_boardnum + 1
+    $old -[hidden]- $labelname
+!endprocedure
+
+!procedure $make_section($json_in, $name)
+    rectangle "$name" {
+        $json_task2section($json_in, $name)
+    }
+!endprocedure
+
+!procedure $make_board($json_in)
+    !if %json_key_exists($json_in, projectName)
+        title **$json_in.projectName**
+    !endif
+
+    !foreach $sect in $boardnames.name
+        $make_section($jsontasks, $sect)
+    !endfor
+
+    ' $make_section($jsontasks, "To Do")
+
+    
+    ' $make_section($jsontasks, "In Progress")
+
+    ' $make_section($jsontasks, "Done")
+
+    ' $make_section($jsontasks, "Rejected")
+
+    ' "Back Log" -Right[hidden]- "To Do"
+    ' "To Do" -Right[hidden]- "In Progress"
+    ' "In Progress" -Right[hidden]- "Done"
+    ' "Done" -Right[hidden]- "Rejected"
+
+!endprocedure
+
+!$jsontasks = %load_json(tasks.json)
+
+$make_board($jsontasks)
+
+
+footer Made by PUML Strings: Kanban
+
+@enduml

@@ -2,81 +2,116 @@
 
 'Section to start listing tasks
 
-!$projason = %load_json(tasks.json)
+!procedure $json_title($json_in)
+    !if %json_key_exists($json_in, startDate)
+        project starts $json_in.startDate
+    !endif
+!endprocedure
 
-!if %json_key_exists($projason, startDate)
-    project starts $projason.startDate
-!endif
-
-!if %json_key_exists($projason, closedDays)
-    !foreach $day in $projason.closedDays
-        !if %json_key_exists($day, day)
-            $day.day are closed
-        !endif
-        !if %json_key_exists($day, date)
-            $day.date is closed
+' setup closed days and days off
+!procedure $json_setupweeks($json_in)
+    !if %json_key_exists($json_in, closedDays)
+        !foreach $day in $json_in.closedDays
+            !if %json_key_exists($day, day)
+                $day.day are closed
+            !endif
+            !if %json_key_exists($day, date)
+                $day.date is closed
+            !endif
+        !endfor
+    !endif
+!endprocedure
+' rendering tasks
+!procedure $json2task($json_in)
+    !foreach $ta in $json_in.tasks
+        !if ($ta.id > 0)
+            !$strvar = ""
+            !if %json_key_exists($ta, resources)
+                !$strvar = $strvar + "on "
+                !foreach $re in $ta.resources
+                    !$strvar = $strvar + "{"
+                    !$strvar = $strvar + $re.name:$re.percent%
+                    !$strvar = $strvar + "}"
+                !endfor
+            !endif
+            [$ta.description] $strvar requires $ta.duration days
         !endif
     !endfor
-!endif
+!endprocedure
 
 
-!foreach $ta in $projason.tasks
-    !if ($ta.id > 0)
-        !$strvar = ""
-        !if %json_key_exists($ta, resources)
-            !$strvar = $strvar + "on "
-            !foreach $re in $ta.resources
-                !$strvar = $strvar + "{"
-                !$strvar = $strvar + $re.name:$re.percent%
-                !$strvar = $strvar + "}"
-            !endfor
+' add starting constraint for tasks
+!procedure $json_startdate($json_in)
+    !foreach $ta in $json_in.tasks
+        !if %json_key_exists($ta, starts)
+            [$ta.description] starts %string($ta.starts)
         !endif
-        [$ta.description] $strvar requires $ta.duration days
-    !endif
-!endfor
+    !endfor
+!endprocedure
 
-'add starting constraint
-!foreach $ta in $projason.tasks
-    !if %json_key_exists($ta, starts)
-        [$ta.description] starts %string($ta.starts)
-    !endif
-!endfor
 
 'section to add in precedding tasks
-
-!foreach $ts in $projason.tasks
-    !if (%json_key_exists($ts, predecessors))
-        !if (%get_json_type($ts.predecessors) == "array")
-            !foreach $pr in $ts.predecessors
-                !foreach $tf in $projason.tasks
-                    !if ($pr == $tf.id)
-                        [$tf.description] -> [$ts.description]
+!procedure $json_end2start($json_in)
+    !foreach $ts in $projson.tasks
+        !if (%json_key_exists($ts, predecessors))
+            !if (%get_json_type($ts.predecessors) == "array")
+                !foreach $pr in $ts.predecessors
+                    !foreach $tf in $projson.tasks
+                        !if ($pr == $tf.id)
+                            [$tf.description] -> [$ts.description]
+                        !endif
+                    !endfor
+                !endfor
+            !else !if (%get_json_type($ts.predecessors) == "number")
+                !foreach $tf2 in $projson.tasks
+                    !if ($ts.predecessors == $tf2.id)
+                        [$tf2.description] -> [$ts.description]
                     !endif
                 !endfor
-            !endfor
-        !else !if (%get_json_type($ts.predecessors) == "number")
-            !foreach $tf2 in $projason.tasks
-                !if ($ts.predecessors == $tf2.id)
-                    [$tf2.description] -> [$ts.description]
-                !endif
-            !endfor
+            !endif
         !endif
-    !endif
-!endfor
+    !endfor
+!endprocedure
 
 'task completeion listings
-!foreach $task in $projason.tasks
-    !if %json_key_exists($task, completed)
-        [$task.description] is $task.completed completed
-    !else
-        [$task.description] is 0 completed
+!procedure $json_completion($json_in)
+    !foreach $ts in $json_in.tasks
+        !if %json_key_exists($ts, completed)
+            [$ts.description] is $ts.completed% completed
+        !else
+            [$task.description] is 0% completed
+        !endif
+    !endfor
+!endprocedure
+
+!procedure $json2title($json_in)
+    !if %json_key_exists($json_in, projectName)
+        title $projson.projectName
     !endif
-!endfor
+!endprocedure
 
-!if %json_key_exists($projason, projectName)
-title $projason.projectName
-!endif
+!procedure $json2chart($json_in)
 
-footer Made by PUML Strungs: Gantt
+    $json_title($json_in)
+
+    $json_setupweeks($json_in)
+
+    $json2task($json_in)
+
+    $json_startdate($json_in)
+
+    $json_end2start($json_in)
+
+    $json_completion($json_in)
+
+    $json2title($json_in)
+
+    footer Made by PUML Strings: Gantt
+
+!endprocedure
+
+!$projson = %load_json(tasks.json)
+$json2chart($projson)
+
 
 @endgantt
