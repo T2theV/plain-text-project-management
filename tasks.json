@@ -1,0 +1,92 @@
+ {
+    "id" : 1,
+    "projectName" : "PUML Strings",
+    "startDate" : "2023-12-04",
+    "closedDays" : [
+        {"day" : "monday"},
+        {"day" : "tuesday"},
+        {"day" : "wednesday"},
+        {"day" : "thursday"},
+        {"day" : "friday"}
+    ],
+    "tasks" : [
+        {
+            "id" : 1,
+            "description" : "Multi project",
+            "duration" : 10,
+            "resources" : [
+                {
+                    "name" : "Tim",
+                    "percent" : 100
+                }
+            ],
+            "completed" : 0,
+            "board" : "To Do"
+        }, {
+            "id" : 2,
+            "description" : "Milestones",
+            "duration" : 5,
+            "resources" : [
+                {
+                    "name" : "Tim",
+                    "percent" : 100
+                }
+            ],
+            "completed" : 0,
+            "board" : "To Do"
+        },
+        {
+            "id" : 3,
+            "description" : "Handle Task End",
+            "duration" : 2,
+            "resources" : [
+                {
+                    "name" : "Tim",
+                    "percent" : 100
+                }
+            ],
+            "predecessors" : 2,
+            "completed" : 0,
+            "board" : "To Do"
+        },
+        {
+            "id" : 4,
+            "description" : "Fix Kanban View",
+            "duration" : 2,
+            "resources" : [
+                {
+                    "name" : "Tim",
+                    "percent" : 100
+                }
+            ],
+            "completed" : 0,
+            "board" : "To Do"
+        },
+        {
+            "id" : 5,
+            "description" : "Remove ID's",
+            "duration" : 1,
+            "resources" : [
+                {
+                    "name" : "Tim",
+                    "percent" : 100
+                }
+            ],
+            "completed" : 0,
+            "board" : "To Do"
+        },
+        {
+            "id" : 6,
+            "description" : "Add autorendering in Github",
+            "duration" : 5,
+            "resources" : [
+                {
+                    "name" : "Tim",
+                    "percent" : 100
+                }
+            ],
+            "completed" : 0,
+            "board" : "To Do"
+        }
+    ]
+}
