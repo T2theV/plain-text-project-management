@@ -12,20 +12,8 @@
     "tasks" : [
         {
             "id" : 1,
-            "description" : "Multi project",
-            "duration" : 10,
-            "resources" : [
-                {
-                    "name" : "Tim",
-                    "percent" : 100
-                }
-            ],
-            "completed" : 0,
-            "board" : "To Do"
-        }, {
-            "id" : 2,
-            "description" : "Milestones",
-            "duration" : 5,
+            "description" : "Make VSCode rendering example",
+            "duration" : 2,
             "resources" : [
                 {
                     "name" : "Tim",
@@ -36,18 +24,32 @@
             "board" : "To Do"
         },
         {
-            "id" : 3,
-            "description" : "Handle Task End",
-            "duration" : 2,
+            "id" : 2,
+            "description" : "Make propper readme $ Documentation",
+            "duration" : 4,
             "resources" : [
                 {
                     "name" : "Tim",
                     "percent" : 100
                 }
             ],
-            "predecessors" : 2,
             "completed" : 0,
-            "board" : "To Do"
+            "board" : "To Do",
+            "predecessors" : 1
+        },
+        {
+            "id" : 3,
+            "description" : "Remove ID's",
+            "duration" : 1,
+            "resources" : [
+                {
+                    "name" : "Tim",
+                    "percent" : 100
+                }
+            ],
+            "completed" : 0,
+            "board" : "To Do",
+            "predecessors" : 2
         },
         {
             "id" : 4,
@@ -60,12 +62,13 @@
                 }
             ],
             "completed" : 0,
-            "board" : "To Do"
+            "board" : "To Do",
+            "predecessors" : 3,
         },
         {
             "id" : 5,
-            "description" : "Remove ID's",
-            "duration" : 1,
+            "description" : "Add sprint in Kanban",
+            "duration" : 2,
             "resources" : [
                 {
                     "name" : "Tim",
@@ -73,10 +76,37 @@
                 }
             ],
             "completed" : 0,
-            "board" : "To Do"
+            "board" : "Back Log"
         },
         {
             "id" : 6,
+            "description" : "Milestones",
+            "duration" : 5,
+            "resources" : [
+                {
+                    "name" : "Tim",
+                    "percent" : 100
+                }
+            ],
+            "completed" : 0,
+            "board" : "Back Log"
+        },
+        {
+            "id" : 7,
+            "description" : "Handle Task End",
+            "duration" : 2,
+            "resources" : [
+                {
+                    "name" : "Tim",
+                    "percent" : 100
+                }
+            ],
+            "predecessors" : 2,
+            "completed" : 0,
+            "board" : "Back Log"
+        },
+        {
+            "id" : 8,
             "description" : "Add autorendering in Github",
             "duration" : 5,
             "resources" : [
@@ -86,7 +116,47 @@
                 }
             ],
             "completed" : 0,
-            "board" : "To Do"
+            "board" : "Back Log"
+        },
+        {
+            "id" : 9,
+            "description" : "Multi project",
+            "duration" : 10,
+            "resources" : [
+                {
+                    "name" : "Tim",
+                    "percent" : 100
+                }
+            ],
+            "completed" : 0,
+            "board" : "Back Log"
+        },
+        {
+            "id" : 10,
+            "description" : "Seperation of Gantt tasks in Kanban",
+            "duration" : 4,
+            "resources" : [
+                {
+                    "name" : "Tim",
+                    "percent" : 100
+                }
+            ],
+            "completed" : 0,
+            "board" : "Back Log"
+        },
+        {
+            "id" : 11,
+            "description" : "Subtasking Structures",
+            "duration" : 10,
+            "resources" : [
+                {
+                    "name" : "Tim",
+                    "percent" : 100
+                }
+            ],
+            "completed" : 0,
+            "board" : "Back Log",
+            "storyPoints" : 16
         }
     ]
 }
